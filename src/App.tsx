@@ -10,10 +10,6 @@ import { SkillsSection } from './sections/SkillsSection';
 import { CertificationsSection } from './sections/CertificationsSection';
 import { EducationSection } from './sections/EducationSection';
 import { ContactSection } from './sections/ContactSection';
-import { PERSONAL_INFO } from './data/portfolioData';
-
-// Safety guard: the phone number is intentionally not displayed anywhere.
-PERSONAL_INFO.phone = '';
 
 const TRACKED_SECTIONS = ['about', 'experience', 'projects', 'skills', 'certifications', 'education', 'contact'];
 
@@ -40,9 +36,15 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#08090E] text-slate-100 font-sans selection:bg-cyan-500/30 selection:text-cyan-200 relative overflow-x-hidden">
+      <a
+        href="#main-content"
+        className="sr-only fixed left-4 top-4 z-[60] rounded-lg bg-[#0071E3] px-4 py-2 text-sm font-semibold text-white shadow-lg focus:not-sr-only focus:outline-none focus:ring-4 focus:ring-blue-200"
+      >
+        Skip to main content
+      </a>
       <CustomCursor />
       <Navbar activeSection={activeSection} />
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <HeroSection />
         <AboutSection />
         <ExperienceSection />
