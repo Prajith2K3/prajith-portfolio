@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Mail, CheckCircle2 } from 'lucide-react';
-import { DataGalaxyScene } from '../components/3d/DataGalaxyScene';
 import { PERSONAL_INFO } from '../data/portfolioData';
+
+const DataGalaxyScene = lazy(() =>
+  import('../components/3d/DataGalaxyScene').then(({ DataGalaxyScene }) => ({ default: DataGalaxyScene }))
+);
 
 export const HeroSection: React.FC = () => {
   const scrollToSection = (id: string) => {
@@ -118,7 +121,13 @@ export const HeroSection: React.FC = () => {
           transition={{ duration: 1, delay: 0.4 }}
           className="pt-4 max-w-4xl mx-auto"
         >
-          <DataGalaxyScene />
+          <Suspense
+            fallback={
+              <div className="h-[360px] md:h-[500px] w-full animate-pulse rounded-3xl bg-gradient-to-b from-blue-50 to-transparent" aria-hidden="true" />
+            }
+          >
+            <DataGalaxyScene />
+          </Suspense>
         </motion.div>
       </div>
     </section>
