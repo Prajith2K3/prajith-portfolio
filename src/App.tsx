@@ -9,8 +9,9 @@ import { ProjectsSection } from './sections/ProjectsSection';
 import { SkillsSection } from './sections/SkillsSection';
 import { CertificationsSection } from './sections/CertificationsSection';
 import { EducationSection } from './sections/EducationSection';
+import { ContactSection } from './sections/ContactSection';
 
-const TRACKED_SECTIONS = ['about', 'experience', 'projects', 'skills', 'certifications', 'education'];
+const TRACKED_SECTIONS = ['about', 'experience', 'projects', 'skills', 'certifications', 'education', 'contact'];
 
 export const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState('about');
@@ -45,6 +46,7 @@ export const App: React.FC = () => {
         <SkillsSection />
         <CertificationsSection />
         <EducationSection />
+        <ContactSection />
       </main>
       <Footer />
     </div>
