@@ -4,124 +4,39 @@
   :root {
     --font-apple: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
-    --color-bg-light: #F5F5F7;
+    --color-bg-light: #F3F7F5;
     --color-bg-white: #FFFFFF;
-    --color-text-primary: #1D1D1F;
-    --color-text-secondary: #6E6E73;
-    --color-border-subtle: #D2D2D7;
-    --color-accent-blue: #0071E3;
-    --color-bg-dark: #000000;
-    --color-bg-dark-secondary: #0A0A0C;
-    --color-dark-primary: #F5F5F7;
-    --color-dark-secondary: #A1A1A6;
+    --color-text-primary: #10201A;
+    --color-text-secondary: #5D6B65;
+    --color-border-subtle: #D5E1DB;
+    --color-accent-blue: #00A86B;
+    --color-accent-green: #00C878;
+    --color-bg-dark: #030B08;
+    --color-bg-dark-secondary: #06261B;
+    --color-dark-primary: #F0FDF4;
+    --color-dark-secondary: #A7B8B0;
   }
 
-  html {
-    scroll-behavior: smooth;
-    -webkit-text-size-adjust: 100%;
-  }
-
-  body {
-    font-family: var(--font-apple);
-    background-color: var(--color-bg-light);
-    color: var(--color-text-primary);
-    overflow-x: hidden;
-    letter-spacing: -0.015em;
-    text-rendering: optimizeLegibility;
-  }
-
-  h1, h2, h3, h4, .font-display {
-    font-family: var(--font-apple);
-    letter-spacing: -0.03em;
-  }
-
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { font-family: var(--font-apple); background-color: var(--color-bg-light); color: var(--color-text-primary); overflow-x: hidden; letter-spacing: -0.015em; text-rendering: optimizeLegibility; }
+  h1, h2, h3, h4, .font-display { font-family: var(--font-apple); letter-spacing: -0.03em; }
   code, pre, .font-mono { font-family: var(--font-mono); }
-
-  img {
-    content-visibility: auto;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
-  }
+  img { content-visibility: auto; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
 }
 
-.apple-card {
-  background: #FFFFFF;
-  border-radius: 28px;
-  border: 1px solid rgba(210, 210, 215, 0.6);
-  box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.04);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-}
-
-.apple-card-hover:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 16px 40px -4px rgba(0, 0, 0, 0.08);
-  border-color: rgba(0, 113, 227, 0.3);
-}
-
-.apple-card-dark {
-  background: #0D0D11;
-  border-radius: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-}
-
-.apple-nav-light {
-  background: rgba(245, 245, 247, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(210, 210, 215, 0.5);
-}
-
-.apple-nav-dark {
-  background: rgba(0, 0, 0, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.apple-btn-blue {
-  background-color: #0071E3;
-  color: #FFFFFF;
-  border-radius: 9999px;
-  font-weight: 500;
-  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.apple-btn-blue:hover {
-  background-color: #0077ED;
-  transform: scale(1.02);
-  box-shadow: 0 4px 16px rgba(0, 113, 227, 0.3);
-}
-
-.apple-btn-secondary {
-  background-color: rgba(0, 0, 0, 0.05);
-  color: #1D1D1F;
-  border-radius: 9999px;
-  font-weight: 500;
-  transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-.apple-btn-secondary:hover {
-  background-color: rgba(0, 0, 0, 0.09);
-  transform: scale(1.02);
-}
-
+.apple-card { background: #FFFFFF; border-radius: 28px; border: 1px solid rgba(213, 225, 219, 0.75); box-shadow: 0 4px 24px -2px rgba(0, 60, 35, 0.05); transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
+.apple-card-hover:hover { transform: translateY(-3px); box-shadow: 0 16px 40px -4px rgba(0, 100, 55, 0.12); border-color: rgba(0, 168, 107, 0.35); }
+.apple-card-dark { background: #07150F; border-radius: 28px; border: 1px solid rgba(52, 211, 153, 0.14); box-shadow: 0 8px 32px rgba(0, 20, 12, 0.5); }
+.apple-nav-light { background: rgba(243, 247, 245, 0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(213, 225, 219, 0.65); }
+.apple-nav-dark { background: rgba(3, 11, 8, 0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(52, 211, 153, 0.12); }
+.apple-btn-blue { background-color: #00A86B; color: #FFFFFF; border-radius: 9999px; font-weight: 500; transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease; }
+.apple-btn-blue:hover { background-color: #00C878; transform: scale(1.02); box-shadow: 0 4px 16px rgba(0, 168, 107, 0.3); }
+.apple-btn-secondary { background-color: rgba(0, 60, 35, 0.06); color: #10201A; border-radius: 9999px; font-weight: 500; transition: transform 0.2s ease, background-color 0.2s ease; }
+.apple-btn-secondary:hover { background-color: rgba(0, 60, 35, 0.1); transform: scale(1.02); }
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(140, 140, 145, 0.4); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(0, 113, 227, 0.7); }
-
-/* Performance helpers: isolate expensive visual layers and keep animations on the compositor. */
+::-webkit-scrollbar-thumb { background: rgba(80, 115, 100, 0.4); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 168, 107, 0.7); }
 .perf-layer { transform: translateZ(0); backface-visibility: hidden; }
-
-@media (max-width: 768px) {
-  .apple-nav-light, .apple-nav-dark { backdrop-filter: none; -webkit-backdrop-filter: none; }
-}
+@media (max-width: 768px) { .apple-nav-light, .apple-nav-dark { backdrop-filter: none; -webkit-backdrop-filter: none; } }
