@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Database, Code, BarChart2, CheckCircle, Lightbulb, FileText, ChevronRight, Image as ImageIcon, Maximize2 } from 'lucide-react';
 import type { Project } from '../../types';
@@ -27,6 +27,32 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, onClose
   const [activeTab, setActiveTab] = useState('01');
   const [activeImgIndex, setActiveImgIndex] = useState(0);
   const [previewImg, setPreviewImg] = useState<{ src: string; title: string; caption: string } | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!project) return;
+
+    const previouslyFocusedElement = document.activeElement;
+    const previousBodyOverflow = document.body.style.overflow;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        if (previewImg) setPreviewImg(null);
+        else onClose();
+      }
+    };
+
+    document.body.style.overflow = 'hidden';
+    document.addEventListener('keydown', handleKeyDown);
+    const frame = window.requestAnimationFrame(() => closeButtonRef.current?.focus());
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      document.body.style.overflow = previousBodyOverflow;
+      document.removeEventListener('keydown', handleKeyDown);
+      if (previouslyFocusedElement instanceof HTMLElement) previouslyFocusedElement.focus();
+    };
+  }, [onClose, previewImg, project]);
 
   if (!project) return null;
 
@@ -52,6 +78,9 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, onClose
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: 15 }}
           transition={{ type: 'spring', damping: 26, stiffness: 320 }}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="case-study-title"
           className="relative w-full max-w-5xl max-h-[92vh] bg-[#0A0A0C] border border-white/15 rounded-3xl shadow-2xl overflow-hidden flex flex-col z-10 text-[#F5F5F7]"
         >
           {/* Header */}
@@ -61,7 +90,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, onClose
                 {project.number}
               </span>
               <div>
-                <h3 className="text-lg font-semibold font-display text-white truncate max-w-xs sm:max-w-md md:max-w-xl">
+                <h3 id="case-study-title" className="text-lg font-semibold font-display text-white truncate max-w-xs sm:max-w-md md:max-w-xl">
                   {project.title}
                 </h3>
                 <div className="flex items-center gap-2 text-xs font-sans text-[#A1A1A6]">
@@ -83,9 +112,10 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, onClose
                 <span>GitHub Profile</span>
               </a>
               <button
+                ref={closeButtonRef}
                 onClick={onClose}
                 className="p-2 rounded-full bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white transition-colors cursor-pointer"
-                aria-label="Close modal"
+                aria-label="Close case study"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -373,6 +403,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, onClose
                 <button
                   onClick={() => setPreviewImg(null)}
                   className="p-1.5 rounded-full bg-white/10 text-white hover:bg-white/20"
+                  aria-label="Close image preview"
                 >
                   <X className="w-5 h-5" />
                 </button>
