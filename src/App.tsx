@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CustomCursor } from './components/common/CustomCursor';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
@@ -11,40 +11,44 @@ import { CertificationsSection } from './sections/CertificationsSection';
 import { EducationSection } from './sections/EducationSection';
 import { ContactSection } from './sections/ContactSection';
 
+const TRACKED_SECTIONS = ['about', 'experience', 'projects', 'skills', 'certifications', 'contact'];
+
 export const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState('about');
 
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = ['about', 'experience', 'projects', 'skills', 'certifications', 'contact'];
-      const scrollPosition = window.scrollY + 200;
+    const elements = TRACKED_SECTIONS
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => Boolean(el));
 
-      for (const sectionId of sections) {
-        const el = document.getElementById(sectionId);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(sectionId);
-            break;
-          }
+    if (!elements.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visible[0]?.target instanceof HTMLElement) {
+          setActiveSection(visible[0].target.id);
         }
+      },
+      {
+        root: null,
+        rootMargin: '-20% 0px -60% 0px',
+        threshold: [0, 0.25, 0.5, 0.75, 1],
       }
-    };
+    );
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    elements.forEach((element) => observer.observe(element));
+    return () => observer.disconnect();
   }, []);
 
   return (
     <div className="min-h-screen bg-[#08090E] text-slate-100 font-sans selection:bg-cyan-500/30 selection:text-cyan-200 relative overflow-x-hidden">
-      {/* Precision Custom Cursor */}
       <CustomCursor />
-
-      {/* Floating Glass Navbar */}
       <Navbar activeSection={activeSection} />
 
-      {/* Main Page Content */}
       <main>
         <HeroSection />
         <AboutSection />
@@ -56,7 +60,6 @@ export const App: React.FC = () => {
         <ContactSection />
       </main>
 
-      {/* Editorial Footer */}
       <Footer />
     </div>
   );
