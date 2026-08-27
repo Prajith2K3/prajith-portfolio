@@ -10,6 +10,10 @@ import { SkillsSection } from './sections/SkillsSection';
 import { CertificationsSection } from './sections/CertificationsSection';
 import { EducationSection } from './sections/EducationSection';
 import { ContactSection } from './sections/ContactSection';
+import { PERSONAL_INFO } from './data/portfolioData';
+
+// Safety guard: the phone number is intentionally not displayed anywhere.
+PERSONAL_INFO.phone = '';
 
 const TRACKED_SECTIONS = ['about', 'experience', 'projects', 'skills', 'certifications', 'education', 'contact'];
 
