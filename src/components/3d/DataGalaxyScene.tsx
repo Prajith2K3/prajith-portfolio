@@ -156,7 +156,7 @@ export const DataGalaxyScene: React.FC = () => {
       const canvas = document.createElement('canvas');
       const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
       if (!gl) setWebglSupported(false);
-    } catch (e) {
+    } catch {
       setWebglSupported(false);
     }
   }, []);
@@ -176,22 +176,24 @@ export const DataGalaxyScene: React.FC = () => {
         gl={{ antialias: true, alpha: true }}
         style={{ background: 'transparent' }}
       >
-        <ambientLight intensity={0.8} />
-        <directionalLight position={[10, 10, 10]} intensity={1.2} color="#FFFFFF" />
-        <pointLight position={[-10, -10, -10]} intensity={0.6} color="#0071E3" />
+        <React.Suspense fallback={null}>
+          <ambientLight intensity={0.8} />
+          <directionalLight position={[10, 10, 10]} intensity={1.2} color="#FFFFFF" />
+          <pointLight position={[-10, -10, -10]} intensity={0.6} color="#0071E3" />
 
-        <PrecisionDataObject />
-        <PrecisionSphereNodes count={75} />
-        <FloatingAnalyticalTokens />
+          <PrecisionDataObject />
+          <PrecisionSphereNodes count={75} />
+          <FloatingAnalyticalTokens />
 
-        <OrbitControls
-          enableZoom={false}
-          enablePan={false}
-          autoRotate
-          autoRotateSpeed={0.5}
-          maxPolarAngle={Math.PI / 1.9}
-          minPolarAngle={Math.PI / 2.4}
-        />
+          <OrbitControls
+            enableZoom={false}
+            enablePan={false}
+            autoRotate
+            autoRotateSpeed={0.5}
+            maxPolarAngle={Math.PI / 1.9}
+            minPolarAngle={Math.PI / 2.4}
+          />
+        </React.Suspense>
       </Canvas>
     </div>
   );
