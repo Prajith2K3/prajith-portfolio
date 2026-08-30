@@ -16,9 +16,9 @@ function PrecisionSphereNodes({ count = 75 }: { count?: number }) {
   const { positions, colors } = useMemo(() => {
     const pos = new Float32Array(count * 3);
     const col = new Float32Array(count * 3);
-    const silver = new THREE.Color("#E2E8F0");
+    const slate = new THREE.Color("#8E8E93");
     const appleBlue = new THREE.Color("#0071E3");
-    const white = new THREE.Color("#FFFFFF");
+    const darkSlate = new THREE.Color("#1D1D1F");
 
     for (let i = 0; i < count; i++) {
       const u = Math.random();
@@ -32,7 +32,7 @@ function PrecisionSphereNodes({ count = 75 }: { count?: number }) {
       pos[i * 3 + 2] = r * Math.cos(phi);
 
       const choice = Math.random();
-      const chosenColor = choice > 0.75 ? appleBlue : choice > 0.35 ? silver : white;
+      const chosenColor = choice > 0.7 ? appleBlue : choice > 0.35 ? slate : darkSlate;
       col[i * 3] = chosenColor.r;
       col[i * 3 + 1] = chosenColor.g;
       col[i * 3 + 2] = chosenColor.b;
@@ -55,10 +55,10 @@ function PrecisionSphereNodes({ count = 75 }: { count?: number }) {
         <bufferAttribute attach="attributes-color" args={[colors, 3]} />
       </bufferGeometry>
       <pointsMaterial
-        size={0.07}
+        size={0.08}
         vertexColors
         transparent
-        opacity={0.7}
+        opacity={0.85}
         sizeAttenuation
       />
     </points>
@@ -83,9 +83,9 @@ function PrecisionDataObject() {
         <sphereGeometry args={[3.0, 24, 24]} />
         <meshStandardMaterial
           wireframe
-          color="#D2D2D7"
+          color="#A1A1A6"
           transparent
-          opacity={0.25}
+          opacity={0.4}
           roughness={0.1}
         />
       </mesh>
@@ -94,12 +94,12 @@ function PrecisionDataObject() {
       <mesh rotation={[0.4, 0.4, 0]}>
         <octahedronGeometry args={[1.6]} />
         <meshPhysicalMaterial
-          color="#F5F5F7"
+          color="#E5E5EA"
           roughness={0.2}
           transmission={0.6}
           thickness={0.5}
           transparent
-          opacity={0.3}
+          opacity={0.5}
         />
       </mesh>
 
@@ -109,7 +109,7 @@ function PrecisionDataObject() {
         <meshStandardMaterial
           color="#0071E3"
           emissive="#0071E3"
-          emissiveIntensity={0.5}
+          emissiveIntensity={0.6}
           roughness={0.2}
         />
       </mesh>
@@ -132,11 +132,11 @@ function FloatingAnalyticalTokens() {
           <Float key={idx} speed={1.2} rotationIntensity={0.3} floatIntensity={0.8}>
             <Text
               position={[x, y, z]}
-              fontSize={0.2}
-              color={idx % 3 === 0 ? "#0071E3" : "#475569"}
+              fontSize={0.22}
+              color={idx % 3 === 0 ? "#0071E3" : "#1D1D1F"}
               anchorX="center"
               anchorY="middle"
-              outlineWidth={0.005}
+              outlineWidth={0.015}
               outlineColor="#FFFFFF"
             >
               {token}

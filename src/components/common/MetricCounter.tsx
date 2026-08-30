@@ -5,7 +5,6 @@ interface MetricCounterProps {
   value: string; // e.g. "5,000", "0.68", "$4.64M", "7.06x", "98%"
   label: string;
   sublabel?: string;
-  darkTheme?: boolean;
   className?: string;
 }
 
@@ -13,7 +12,6 @@ export const MetricCounter: React.FC<MetricCounterProps> = ({
   value,
   label,
   sublabel,
-  darkTheme = false,
   className = "",
 }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -75,20 +73,16 @@ export const MetricCounter: React.FC<MetricCounterProps> = ({
   return (
     <div
       ref={ref}
-      className={`p-6 rounded-2xl transition-all ${
-        darkTheme
-          ? 'bg-[#121217] border border-white/10 text-white'
-          : 'bg-white border border-[#D2D2D7]/60 text-[#1D1D1F] shadow-sm'
-      } ${className}`}
+      className={`p-6 rounded-2xl transition-all bg-white border border-[#D2D2D7] text-[#1D1D1F] shadow-[0_4px_20px_rgba(0,0,0,0.04)] ${className}`}
     >
-      <div className={`text-xs font-mono uppercase tracking-wider mb-2 font-medium ${darkTheme ? 'text-[#A1A1A6]' : 'text-[#6E6E73]'}`}>
+      <div className="text-xs font-mono uppercase tracking-wider mb-2 font-bold text-[#4B4B50]">
         {label}
       </div>
-      <div className="text-4xl sm:text-5xl font-semibold font-display tracking-tight leading-none">
+      <div className="text-4xl sm:text-5xl font-bold font-display tracking-tight leading-none text-[#1D1D1F]">
         {isInView ? displayText : "0"}
       </div>
       {sublabel && (
-        <div className={`text-xs mt-3 leading-relaxed font-sans ${darkTheme ? 'text-[#A1A1A6]' : 'text-[#6E6E73]'}`}>
+        <div className="text-xs mt-3 leading-relaxed font-sans text-[#38383B] font-medium">
           {sublabel}
         </div>
       )}

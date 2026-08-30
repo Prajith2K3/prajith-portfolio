@@ -2,64 +2,48 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 interface SectionHeaderProps {
-  number: string; // e.g. "01", "02", "03"
-  category: string; // e.g. "ABOUT", "EXPERIENCE", "PROJECTS"
-  title: string; // e.g. "DATA MEETS DECISION."
+  number: string;
+  category: string;
+  title: string;
   subtitle?: string;
-  darkTheme?: boolean;
-  className?: string;
 }
 
-export const SectionHeader: React.FC<SectionHeaderProps> = ({
-  number,
-  category,
-  title,
-  subtitle,
-  darkTheme = false,
-  className = "",
-}) => {
+export const SectionHeader: React.FC<SectionHeaderProps> = ({ number, category, title, subtitle }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      className={`mb-12 md:mb-16 ${className}`}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+      className="mb-14"
     >
-      {/* Category Pill Badge */}
-      <div className="flex items-center gap-2 mb-4">
-        <span
-          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono tracking-wider uppercase font-medium ${
-            darkTheme
-              ? 'bg-white/10 text-[#F5F5F7] border border-white/15'
-              : 'bg-[#0071E3]/10 text-[#0071E3] border border-[#0071E3]/20'
-          }`}
-        >
-          <span>{number}</span>
-          <span>•</span>
-          <span>{category}</span>
+      <div className="flex items-center gap-3 mb-4">
+        <span className="font-mono text-xs font-bold gradient-text tracking-widest uppercase">
+          {number}
+        </span>
+        <div className="h-px flex-1 max-w-[40px] bg-gradient-to-r from-[#3B82F6] to-transparent opacity-80" />
+        <span className="text-xs font-mono font-bold text-[#93C5FD] uppercase tracking-widest bg-[rgba(59,130,246,0.12)] px-2.5 py-1 rounded-md border border-[rgba(96,165,250,0.25)]">
+          {category}
         </span>
       </div>
 
-      {/* Main Title */}
-      <h2
-        className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold font-display tracking-tight uppercase leading-[1.05] ${
-          darkTheme ? 'text-[#F5F5F7]' : 'text-[#1D1D1F]'
-        }`}
-      >
-        {title}
+      <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white leading-tight tracking-tight max-w-3xl">
+        {title.split(' ').map((word, i, arr) =>
+          i === arr.length - 1 ? (
+            <span key={i} className="gradient-text">{word}</span>
+          ) : (
+            <span key={i}>{word} </span>
+          )
+        )}
       </h2>
 
-      {/* Subtitle */}
       {subtitle && (
-        <p
-          className={`mt-5 text-lg md:text-xl max-w-3xl leading-relaxed font-sans font-normal ${
-            darkTheme ? 'text-[#A1A1A6]' : 'text-[#6E6E73]'
-          }`}
-        >
+        <p className="mt-4 text-base sm:text-lg text-[#CBD5E1] max-w-2xl leading-relaxed font-normal">
           {subtitle}
         </p>
       )}
+
+      <div className="mt-6 neon-line w-24" />
     </motion.div>
   );
 };

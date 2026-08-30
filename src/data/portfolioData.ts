@@ -8,10 +8,9 @@ export const PERSONAL_INFO = {
   summary: "Data Analyst with hands-on experience in Python, SQL, and Power BI, specializing in data cleaning, statistical analysis, and dashboard design. Skilled in ETL, predictive modeling, and business requirements gathering, translating data into actionable insights across churn, sales, and marketing analytics projects.",
   careerGoal: "Seeking a Data Analyst role to leverage analytical modeling, Power BI dashboarding, and SQL query optimization to drive data-informed business decisions.",
   email: "prajithp2k3@gmail.com",
-  phone: "+91 9995506752",
   linkedin: "https://linkedin.com/in/prajith-datascience",
   github: "https://github.com/Prajith2K3",
-  location: "Coimbatore, India",
+  location: "Malappuram, India",
   availabilityStatus: "OPEN TO DATA ANALYST ROLES",
   quickTags: ["Python", "SQL", "Power BI", "Data Cleaning", "Predictive Modeling", "ETL", "Machine Learning"],
 };

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { Menu, X, ArrowUpRight, FileText } from 'lucide-react';
 import { PERSONAL_INFO } from '../../data/portfolioData';
 
 interface NavbarProps {
   activeSection: string;
+  onOpenResume?: () => void;
 }
 
 const NAV_ITEMS = [
@@ -12,46 +13,38 @@ const NAV_ITEMS = [
   { id: 'experience', label: 'Experience' },
   { id: 'projects', label: 'Projects' },
   { id: 'skills', label: 'Skills' },
-  { id: 'certifications', label: 'Certifications' },
+  { id: 'certifications', label: 'Certs' },
   { id: 'contact', label: 'Contact' },
 ];
 
-export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
+export const Navbar: React.FC<NavbarProps> = ({ activeSection, onOpenResume }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const isDarkSection = activeSection === 'experience' || activeSection === 'projects' || activeSection === 'contact';
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => setScrolled(window.scrollY > 30);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (id: string) => {
+  const handleNavClick = (id: string) => {
     setMobileMenuOpen(false);
     const element = document.getElementById(id);
     if (element) {
-      const offset = 110;
+      const offset = 90;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
-      window.scrollTo({
-        top: elementPosition - offset,
-        behavior: 'smooth',
-      });
+      window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' });
     }
   };
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled
-            ? isDarkSection
-              ? 'apple-nav-dark py-3.5'
-              : 'apple-nav-light py-3.5'
+            ? 'dark-nav py-3 shadow-[0_4px_30px_rgba(0,0,0,0.5)]'
             : 'bg-transparent py-5'
         }`}
       >
@@ -59,46 +52,38 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
           {/* Logo */}
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="flex items-center gap-2.5 group cursor-pointer"
+            className="flex items-center gap-3 group cursor-pointer"
           >
-            <img
-              src="/prajith_profile.jpg"
-              alt="Prajith P."
-              className="w-8 h-8 rounded-full object-cover object-top border border-black/10 dark:border-white/20 shadow-sm group-hover:scale-105 transition-transform"
-            />
-            <span
-              className={`font-display font-semibold text-lg tracking-tight transition-colors ${
-                isDarkSection ? 'text-[#F5F5F7]' : 'text-[#1D1D1F]'
-              }`}
-            >
+            <div className="w-8 h-8 rounded-full overflow-hidden border border-[rgba(99,146,255,0.3)] glow-sm group-hover:glow-blue transition-all duration-300">
+              <img
+                src="/prajith_profile.jpg"
+                alt="Prajith P."
+                className="w-full h-full object-cover object-top"
+              />
+            </div>
+            <span className="font-display font-bold text-base tracking-tight text-white group-hover:gradient-text transition-all">
               PRAJITH P.
             </span>
           </button>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1 bg-white/40 dark:bg-black/40 backdrop-blur-md px-4 py-1.5 rounded-full border border-black/5 dark:border-white/10 shadow-sm">
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center gap-1 bg-[rgba(11,20,38,0.75)] backdrop-blur-xl px-2 py-1.5 rounded-full border border-[rgba(148,163,184,0.18)]">
             {NAV_ITEMS.map((item) => {
               const isActive = activeSection === item.id;
               return (
                 <button
                   key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`relative px-4 py-1 text-sm font-sans font-medium transition-colors rounded-full cursor-pointer ${
+                  onClick={() => handleNavClick(item.id)}
+                  className={`relative px-4 py-1.5 text-xs font-body font-semibold rounded-full cursor-pointer transition-all duration-300 ${
                     isActive
-                      ? isDarkSection
-                        ? 'text-white font-semibold'
-                        : 'text-[#1D1D1F] font-semibold'
-                      : isDarkSection
-                      ? 'text-[#A1A1A6] hover:text-white'
-                      : 'text-[#6E6E73] hover:text-[#1D1D1F]'
+                      ? 'text-white font-bold'
+                      : 'text-[#CBD5E1] hover:text-white font-medium'
                   }`}
                 >
                   {isActive && (
                     <motion.div
-                      layoutId="activeNavTab"
-                      className={`absolute inset-0 rounded-full ${
-                        isDarkSection ? 'bg-white/15' : 'bg-black/5'
-                      }`}
+                      layoutId="activeNavPill"
+                      className="absolute inset-0 rounded-full bg-[rgba(59,130,246,0.25)] border border-[rgba(96,165,250,0.5)]"
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -108,25 +93,33 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
             })}
           </nav>
 
-          {/* Right CTA Button */}
-          <div className="hidden lg:flex items-center gap-3">
+          {/* Right CTA */}
+          <div className="hidden lg:flex items-center gap-2.5">
+            {onOpenResume && (
+              <button
+                onClick={onOpenResume}
+                className="px-3 py-1.5 text-xs font-mono font-bold flex items-center gap-1.5 rounded-full bg-[rgba(11,20,38,0.85)] hover:bg-[rgba(59,130,246,0.2)] text-[#93C5FD] hover:text-white border border-[rgba(148,163,184,0.2)] hover:border-[rgba(96,165,250,0.5)] transition-all cursor-pointer shadow-sm group"
+                title="View Official Resume"
+                aria-label="View Resume"
+              >
+                <FileText className="w-3.5 h-3.5 text-[#38BDF8] group-hover:scale-110 transition-transform" />
+                <span>Resume</span>
+              </button>
+            )}
+
             <a
               href={`mailto:${PERSONAL_INFO.email}`}
-              className="apple-btn-blue px-5 py-2 text-xs font-sans font-medium flex items-center gap-1.5 cursor-pointer shadow-sm"
+              className="btn-primary px-5 py-2 text-xs font-semibold flex items-center gap-1.5 cursor-pointer"
             >
-              <span>Get in touch</span>
+              <span>Hire Me</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
             </a>
           </div>
 
-          {/* Mobile Menu Trigger */}
+          {/* Mobile Menu Toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className={`lg:hidden p-2 rounded-full cursor-pointer transition-colors ${
-              isDarkSection
-                ? 'bg-white/10 text-white'
-                : 'bg-black/5 text-[#1D1D1F]'
-            }`}
+            className="lg:hidden p-2 rounded-full cursor-pointer transition-colors bg-[rgba(255,255,255,0.06)] border border-[rgba(148,163,184,0.2)] text-white hover:bg-[rgba(59,130,246,0.15)] hover:border-[rgba(96,165,250,0.5)]"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -134,7 +127,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
         </div>
       </header>
 
-      {/* Mobile Drawer Menu */}
+      {/* Mobile Drawer */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -142,11 +135,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className={`fixed inset-x-0 top-[60px] z-30 lg:hidden p-6 border-b shadow-2xl ${
-              isDarkSection
-                ? 'bg-[#0A0A0C]/95 text-white border-white/10'
-                : 'bg-[#F5F5F7]/95 text-[#1D1D1F] border-[#D2D2D7]'
-            } backdrop-blur-xl`}
+            className="fixed inset-x-0 top-[60px] z-40 lg:hidden p-5 shadow-2xl bg-[rgba(5,10,20,0.98)] backdrop-blur-xl border-b border-[rgba(148,163,184,0.18)]"
           >
             <div className="flex flex-col gap-2">
               {NAV_ITEMS.map((item) => {
@@ -154,26 +143,40 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
                 return (
                   <button
                     key={item.id}
-                    onClick={() => scrollToSection(item.id)}
-                    className={`flex items-center justify-between p-3 rounded-xl text-left text-base font-sans cursor-pointer ${
+                    onClick={() => handleNavClick(item.id)}
+                    className={`flex items-center justify-between p-3.5 rounded-xl text-left text-sm font-semibold cursor-pointer transition-all ${
                       isActive
-                        ? isDarkSection
-                          ? 'bg-white/15 text-white font-semibold'
-                          : 'bg-black/5 text-[#1D1D1F] font-semibold'
-                        : 'text-[#6E6E73] hover:text-[#1D1D1F]'
+                        ? 'bg-[rgba(59,130,246,0.2)] text-white border border-[rgba(96,165,250,0.5)] font-bold'
+                        : 'text-[#CBD5E1] hover:text-white hover:bg-[rgba(255,255,255,0.06)]'
                     }`}
                   >
                     <span>{item.label}</span>
-                    {isActive && <span className="w-2 h-2 rounded-full bg-[#0071E3]" />}
+                    {isActive && <span className="w-2 h-2 rounded-full bg-[#38BDF8] animate-pulse" />}
                   </button>
                 );
               })}
 
+              {onOpenResume && (
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onOpenResume();
+                  }}
+                  className="flex items-center justify-between p-3.5 rounded-xl text-left text-sm font-semibold cursor-pointer transition-all bg-[rgba(59,130,246,0.12)] border border-[rgba(96,165,250,0.3)] text-[#93C5FD] hover:text-white"
+                >
+                  <span className="flex items-center gap-2">
+                    <FileText className="w-4 h-4 text-[#38BDF8]" />
+                    <span>View Resume</span>
+                  </span>
+                  <ArrowUpRight className="w-4 h-4 text-[#38BDF8]" />
+                </button>
+              )}
+
               <a
                 href={`mailto:${PERSONAL_INFO.email}`}
-                className="mt-3 apple-btn-blue py-3.5 px-4 text-center font-sans text-sm font-medium flex items-center justify-center gap-1.5 cursor-pointer"
+                className="mt-2 btn-primary py-3.5 px-4 text-center text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>Get in touch</span>
+                <span>Hire Me</span>
                 <ArrowUpRight className="w-4 h-4" />
               </a>
             </div>

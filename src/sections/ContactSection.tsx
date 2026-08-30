@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { PERSONAL_INFO } from '../data/portfolioData';
-import { Mail, Phone, Send, CheckCircle2, ArrowRight, Copy } from 'lucide-react';
+import { Mail, Send, CheckCircle2, ArrowRight, Copy, MapPin, MessageSquare } from 'lucide-react';
 import { LinkedinIcon, GithubIcon } from '../components/common/SocialIcons';
 
 export const ContactSection: React.FC = () => {
@@ -27,166 +27,187 @@ export const ContactSection: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="py-32 bg-[#000000] text-[#F5F5F7] relative overflow-hidden border-t border-white/10 scroll-mt-28">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-16">
+    <section id="contact" className="py-32 section-alt text-[#F0F4FF] section-separator relative overflow-hidden scroll-mt-24">
+      <div className="absolute inset-0 grid-pattern opacity-20 pointer-events-none" />
+
+      {/* Background glow */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.08)_0%,transparent_70%)] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <SectionHeader
           number="07"
           category="Get in Touch"
           title="LET'S TURN DATA INTO DECISIONS."
-          subtitle="Open to Data Analyst opportunities at Big 4 and global technology enterprises."
-          darkTheme={true}
+          subtitle="Open to Data Analyst opportunities, analytics consulting, and data-driven roles."
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          {/* Left Column — Large Blue Links & Direct Details */}
+        {/* Centered availability card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="glass-card-lg p-6 sm:p-8 mb-12 max-w-2xl mx-auto text-center relative overflow-hidden"
+        >
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#3B82F6] to-transparent opacity-70" />
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-[rgba(59,130,246,0.4)] glow-sm">
+              <img src="/prajith_profile.jpg" alt="Prajith P." className="w-full h-full object-cover object-top" />
+            </div>
+            <div className="text-left">
+              <h3 className="text-xl font-display font-bold text-white">Prajith P.</h3>
+              <p className="text-sm gradient-text font-mono font-bold">Data Analyst</p>
+              <div className="flex items-center gap-1.5 text-xs font-mono text-[#93C5FD] font-medium mt-0.5">
+                <MapPin className="w-3.5 h-3.5 text-[#38BDF8]" />
+                {PERSONAL_INFO.location}
+              </div>
+            </div>
+          </div>
+          <div className="inline-flex items-center gap-2 text-xs font-mono font-bold text-[#34D399] bg-[rgba(16,185,129,0.15)] border border-[rgba(16,185,129,0.3)] px-4 py-2 rounded-full">
+            <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
+            {PERSONAL_INFO.availabilityStatus}
+          </div>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+          {/* Left Column — Contact info */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="lg:col-span-6 space-y-8"
+            className="space-y-6"
           >
-            <div className="space-y-4">
-              <div className="flex items-center gap-4">
-                <img
-                  src="/prajith_profile.jpg"
-                  alt="Prajith P."
-                  className="w-14 h-14 rounded-full object-cover object-top border-2 border-[#0071E3] shadow-md shrink-0"
-                />
-                <div>
-                  <h3 className="text-2xl sm:text-3xl font-semibold font-display text-white">
-                    Connect directly with Prajith P.
-                  </h3>
-                  <p className="text-[#0071E3] text-sm font-mono font-medium">Data Analyst & Business Intelligence Specialist</p>
-                </div>
-              </div>
-              <p className="text-[#A1A1A6] text-base font-sans leading-relaxed max-w-lg">
-                Available for Data Analyst roles specializing in Python, SQL, Power BI, data pipeline cleaning, and predictive modeling.
+            <div>
+              <h4 className="text-2xl sm:text-3xl font-display font-bold text-white mb-3">
+                Connect Directly with <span className="gradient-text">Prajith P.</span>
+              </h4>
+              <p className="text-[#CBD5E1] text-base leading-relaxed font-normal">
+                Available for Data Analyst roles specializing in Python, SQL, Power BI, data pipeline engineering, and predictive modeling.
               </p>
             </div>
 
-            {/* Apple Blue Action Links */}
-            <div className="space-y-4 pt-2 font-sans">
-              {/* Email Link */}
-              <div className="p-5 rounded-2xl bg-[#121217] border border-white/10 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3 truncate">
-                  <Mail className="w-5 h-5 text-[#0071E3] shrink-0" />
+            {/* Email card */}
+            <div className="glass-card p-5 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-[rgba(59,130,246,0.15)] border border-[rgba(96,165,250,0.3)] shrink-0">
+                  <Mail className="w-5 h-5 text-[#93C5FD]" />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs font-mono text-[#93C5FD] font-semibold mb-0.5">Email Address</div>
                   <a
                     href={`mailto:${PERSONAL_INFO.email}`}
-                    className="text-[#0071E3] hover:text-[#0077ED] font-semibold text-base sm:text-lg flex items-center gap-1 transition-colors truncate"
+                    className="text-[#38BDF8] hover:text-white font-bold text-sm sm:text-base flex items-center gap-1 transition-colors truncate"
                   >
-                    <span>Email Prajith</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </a>
-                </div>
-
-                <button
-                  onClick={handleCopyEmail}
-                  className="p-2.5 rounded-full bg-white/5 hover:bg-white/15 text-slate-300 transition-colors cursor-pointer shrink-0 border border-white/10"
-                  title="Copy email address"
-                >
-                  {copiedEmail ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-                </button>
-              </div>
-
-              {/* Phone Link */}
-              <div className="p-5 rounded-2xl bg-[#121217] border border-white/10 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <Phone className="w-5 h-5 text-[#0071E3] shrink-0" />
-                  <a
-                    href={`tel:${PERSONAL_INFO.phone}`}
-                    className="text-[#0071E3] hover:text-[#0077ED] font-semibold text-base sm:text-lg flex items-center gap-1 transition-colors"
-                  >
-                    <span>{PERSONAL_INFO.phone}</span>
-                    <ArrowRight className="w-4 h-4" />
+                    {PERSONAL_INFO.email}
+                    <ArrowRight className="w-4 h-4 shrink-0" />
                   </a>
                 </div>
               </div>
+              <button
+                onClick={handleCopyEmail}
+                className="p-2.5 rounded-xl bg-[rgba(255,255,255,0.06)] hover:bg-[rgba(59,130,246,0.15)] border border-[rgba(148,163,184,0.2)] hover:border-[rgba(96,165,250,0.5)] text-[#CBD5E1] hover:text-white transition-all cursor-pointer shrink-0"
+                title="Copy email address"
+              >
+                {copiedEmail ? <CheckCircle2 className="w-4 h-4 text-[#10B981]" /> : <Copy className="w-4 h-4" />}
+              </button>
+            </div>
 
-              {/* LinkedIn & GitHub Blue Links Grid */}
-              <div className="grid grid-cols-2 gap-4 pt-2">
-                <a
-                  href={PERSONAL_INFO.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-5 rounded-2xl bg-[#121217] border border-white/10 hover:border-[#0071E3] flex items-center justify-between text-[#0071E3] font-semibold text-base transition-all group"
-                >
-                  <div className="flex items-center gap-2">
-                    <LinkedinIcon className="w-4 h-4 text-[#0071E3]" />
-                    <span>LinkedIn</span>
-                  </div>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </a>
+            {/* Social links */}
+            <div className="grid grid-cols-2 gap-4">
+              <a
+                href={PERSONAL_INFO.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="glass-card p-4 flex items-center justify-between text-[#93C5FD] hover:text-white font-bold group/link"
+              >
+                <div className="flex items-center gap-2">
+                  <LinkedinIcon className="w-5 h-5" />
+                  <span className="text-sm sm:text-base">LinkedIn</span>
+                </div>
+                <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
+              </a>
+              <a
+                href={PERSONAL_INFO.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="glass-card p-4 flex items-center justify-between text-[#93C5FD] hover:text-white font-bold group/link"
+              >
+                <div className="flex items-center gap-2">
+                  <GithubIcon className="w-5 h-5" />
+                  <span className="text-sm sm:text-base">GitHub</span>
+                </div>
+                <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
+              </a>
+            </div>
 
-                <a
-                  href={PERSONAL_INFO.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-5 rounded-2xl bg-[#121217] border border-white/10 hover:border-[#0071E3] flex items-center justify-between text-[#0071E3] font-semibold text-base transition-all group"
-                >
-                  <div className="flex items-center gap-2">
-                    <GithubIcon className="w-4 h-4 text-[#0071E3]" />
-                    <span>GitHub</span>
-                  </div>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </a>
-              </div>
+            {/* Quick facts */}
+            <div className="glass-card p-5 space-y-3">
+              <div className="text-xs font-mono text-[#93C5FD] uppercase tracking-wider font-bold mb-2">Quick Facts</div>
+              {[
+                { label: 'Availability', value: 'Immediate' },
+                { label: 'Work Mode', value: 'Remote / On-site / Hybrid' },
+                { label: 'Location', value: PERSONAL_INFO.location },
+                { label: 'Response Time', value: '< 24 hours' },
+              ].map(({ label, value }) => (
+                <div key={label} className="flex items-center justify-between text-sm sm:text-base">
+                  <span className="text-[#CBD5E1] font-mono font-medium">{label}</span>
+                  <span className="text-white font-bold">{value}</span>
+                </div>
+              ))}
             </div>
           </motion.div>
 
-          {/* Right Column — Clean Apple Contact Form */}
+          {/* Right Column — Contact Form */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="lg:col-span-6"
+            transition={{ duration: 0.6, delay: 0.15 }}
           >
-            <div className="p-8 rounded-3xl bg-[#121217] border border-white/10">
-              <h4 className="text-xs font-mono uppercase tracking-wider text-[#0071E3] font-medium mb-6">
-                Send a Direct Message
-              </h4>
+            <div className="glass-card-lg p-8 relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#3B82F6] to-[#06B6D4] opacity-80" />
+
+              <div className="flex items-center gap-2 text-[#93C5FD] mb-6">
+                <MessageSquare className="w-5 h-5 text-[#38BDF8]" />
+                <h4 className="text-sm sm:text-base font-mono uppercase tracking-wider font-bold text-white">Send a Direct Message</h4>
+              </div>
 
               {formSubmitted ? (
-                <div className="p-8 text-center space-y-3 rounded-2xl bg-white/5 border border-white/10">
-                  <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto" />
-                  <h4 className="text-lg font-semibold font-display text-white">Message Delivered</h4>
-                  <p className="text-xs text-[#A1A1A6] font-sans">
-                    Thank you. Prajith will review your inquiry and get back to you promptly.
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-10 text-center space-y-3 rounded-2xl bg-[rgba(16,185,129,0.08)] border border-[rgba(16,185,129,0.3)]"
+                >
+                  <CheckCircle2 className="w-12 h-12 text-[#10B981] mx-auto" />
+                  <h4 className="text-xl font-display font-bold text-white">Message Delivered!</h4>
+                  <p className="text-sm sm:text-base text-[#CBD5E1]">
+                    Thank you. Prajith will review your inquiry and get back within 24 hours.
                   </p>
-                </div>
+                </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4 font-sans">
-                  <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-[#A1A1A6] mb-1.5 font-medium">
-                      Your Name
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. Hiring Manager / Recruiter"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-[#0071E3] focus:outline-none text-sm text-white placeholder-slate-500 transition-colors"
-                    />
-                  </div>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  {[
+                    { label: 'Your Name', type: 'text', key: 'name' as const, placeholder: 'e.g. Hiring Manager / Recruiter' },
+                    { label: 'Your Email Address', type: 'email', key: 'email' as const, placeholder: 'name@company.com' },
+                  ].map(({ label, type, key, placeholder }) => (
+                    <div key={key}>
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#93C5FD] mb-1.5 font-bold">
+                        {label}
+                      </label>
+                      <input
+                        type={type}
+                        required
+                        placeholder={placeholder}
+                        value={formData[key]}
+                        onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
+                        className="w-full px-4 py-3 text-sm font-medium input-dark"
+                      />
+                    </div>
+                  ))}
 
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-[#A1A1A6] mb-1.5 font-medium">
-                      Your Email Address
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      placeholder="name@company.com"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-[#0071E3] focus:outline-none text-sm text-white placeholder-slate-500 transition-colors"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-[#A1A1A6] mb-1.5 font-medium">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-[#93C5FD] mb-1.5 font-bold">
                       Message / Project Scope
                     </label>
                     <textarea
@@ -195,13 +216,13 @@ export const ContactSection: React.FC = () => {
                       placeholder="Discussing Data Analyst role or project requirement..."
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-[#0071E3] focus:outline-none text-sm text-white placeholder-slate-500 transition-colors resize-none"
+                      className="w-full px-4 py-3 text-sm font-medium input-dark resize-none"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full apple-btn-blue py-3.5 text-sm font-medium flex items-center justify-center gap-2 cursor-pointer shadow-md"
+                    className="w-full btn-primary py-3.5 text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <Send className="w-4 h-4" />
                     <span>Send Message</span>

@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Database, Code, BarChart2, CheckCircle, Lightbulb, FileText, ChevronRight, Image as ImageIcon, Maximize2 } from 'lucide-react';
 import type { Project } from '../../types';
 import { CodeBlock } from '../common/CodeBlock';
-import { MetricCounter } from '../common/MetricCounter';
 import { GithubIcon } from '../common/SocialIcons';
 
 interface CaseStudyModalProps {
@@ -43,7 +42,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, onClose
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="absolute inset-0 bg-black/80 backdrop-blur-xl"
+          className="absolute inset-0 bg-black/85 backdrop-blur-xl"
         />
 
         {/* Modal Window */}
@@ -52,39 +51,43 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, onClose
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: 15 }}
           transition={{ type: 'spring', damping: 26, stiffness: 320 }}
-          className="relative w-full max-w-5xl max-h-[92vh] bg-[#0A0A0C] border border-white/15 rounded-3xl shadow-2xl overflow-hidden flex flex-col z-10 text-[#F5F5F7]"
+          className="relative w-full max-w-5xl max-h-[92vh] rounded-3xl overflow-hidden flex flex-col z-10 text-[#F0F4FF]"
+          style={{ background: 'rgba(8, 15, 30, 0.97)', border: '1px solid rgba(99, 146, 255, 0.15)', boxShadow: '0 0 60px rgba(0,0,0,0.8)' }}
         >
+          {/* Top accent line */}
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#3B82F6] via-[#06B6D4] to-transparent" />
+
           {/* Header */}
-          <div className="px-6 py-4 bg-[#121217] border-b border-white/10 flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <span className="w-8 h-8 rounded-full bg-[#0071E3] text-white font-mono font-bold flex items-center justify-center text-xs">
+          <div className="px-6 py-4 border-b border-[rgba(99,146,255,0.1)] flex items-center justify-between gap-4 bg-[rgba(0,0,0,0.2)]">
+            <div className="flex items-center gap-3 min-w-0">
+              <span className="w-8 h-8 rounded-full bg-gradient-to-br from-[#3B82F6] to-[#06B6D4] text-white font-mono font-bold flex items-center justify-center text-xs shrink-0">
                 {project.number}
               </span>
-              <div>
-                <h3 className="text-lg font-semibold font-display text-white truncate max-w-xs sm:max-w-md md:max-w-xl">
+              <div className="min-w-0">
+                <h3 className="text-base sm:text-lg font-display font-bold text-white truncate max-w-xs sm:max-w-md">
                   {project.title}
                 </h3>
-                <div className="flex items-center gap-2 text-xs font-sans text-[#A1A1A6]">
-                  <span className="text-[#0071E3] font-mono">{project.datasetScale}</span>
+                <div className="flex items-center gap-2 text-xs font-mono text-[#93C5FD]">
+                  <span className="gradient-text font-bold">{project.datasetScale}</span>
                   <span>•</span>
-                  <span>{project.date}</span>
+                  <span className="text-[#CBD5E1]">{project.date}</span>
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0">
               <a
                 href="https://github.com/Prajith2K3"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-white text-xs font-sans border border-white/10 transition-colors"
+                className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[rgba(255,255,255,0.06)] hover:bg-[rgba(59,130,246,0.15)] text-[#CBD5E1] hover:text-white text-xs font-mono border border-[rgba(148,163,184,0.2)] hover:border-[rgba(96,165,250,0.5)] transition-all"
               >
                 <GithubIcon className="w-3.5 h-3.5" />
-                <span>GitHub Profile</span>
+                <span>GitHub</span>
               </a>
               <button
                 onClick={onClose}
-                className="p-2 rounded-full bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                className="p-2 rounded-full bg-[rgba(255,255,255,0.06)] hover:bg-[rgba(255,255,255,0.12)] text-white border border-[rgba(148,163,184,0.2)] transition-colors cursor-pointer"
                 aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
@@ -93,7 +96,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, onClose
           </div>
 
           {/* Section Navigation Tabs */}
-          <div className="px-6 py-3 bg-[#0A0A0C] border-b border-white/10 overflow-x-auto scrollbar-none flex items-center gap-2">
+          <div className="px-4 py-2.5 border-b border-[rgba(148,163,184,0.15)] overflow-x-auto flex items-center gap-1.5 bg-[rgba(5,10,20,0.5)] scrollbar-none">
             {SECTIONS.map((sec) => {
               if (sec.id === '04' && !project.projectImages?.length) return null;
               const isActive = activeTab === sec.id;
@@ -102,37 +105,41 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, onClose
                 <button
                   key={sec.id}
                   onClick={() => setActiveTab(sec.id)}
-                  className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-mono whitespace-nowrap transition-all cursor-pointer ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono whitespace-nowrap transition-all cursor-pointer ${
                     isActive
-                      ? 'bg-[#0071E3] text-white font-semibold shadow-md'
-                      : 'bg-white/5 text-[#A1A1A6] hover:bg-white/10 hover:text-white'
+                      ? 'bg-gradient-to-r from-[#2563EB] to-[#06B6D4] text-white font-black shadow-md'
+                      : 'bg-[rgba(11,20,38,0.75)] text-[#CBD5E1] hover:text-white border border-[rgba(148,163,184,0.2)] hover:border-[rgba(96,165,250,0.5)] font-semibold'
                   }`}
                 >
-                  <span>{sec.id}</span>
+                  <span className={isActive ? 'text-white' : 'text-[#38BDF8] font-bold'}>{sec.id}</span>
                   <Icon className="w-3.5 h-3.5" />
-                  <span className="font-sans">{sec.title}</span>
+                  <span>{sec.title}</span>
                 </button>
               );
             })}
           </div>
 
           {/* Body Content */}
-          <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6 scrollbar-thin">
+          <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6">
             {/* TAB 01: BUSINESS QUESTION */}
             {activeTab === '01' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-                <div className="p-6 rounded-2xl bg-[#141419] border border-white/10">
-                  <h4 className="text-xs font-mono uppercase tracking-wider text-[#0071E3] mb-2 flex items-center gap-2 font-medium">
-                    <Lightbulb className="w-4 h-4 text-[#0071E3]" /> 01 — Core Business Challenge
+                <div className="p-6 rounded-2xl bg-[rgba(59,130,246,0.08)] border border-[rgba(96,165,250,0.25)]">
+                  <h4 className="text-xs font-mono uppercase tracking-wider text-[#93C5FD] mb-3 flex items-center gap-2 font-bold">
+                    <Lightbulb className="w-4 h-4 text-[#38BDF8]" /> 01 — Core Business Challenge
                   </h4>
-                  <p className="text-lg md:text-xl font-sans font-medium text-white leading-relaxed">
+                  <p className="text-lg sm:text-xl text-white leading-relaxed font-medium">
                     {project.businessProblem}
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {project.keyMetrics.map((m, idx) => (
-                    <MetricCounter key={idx} value={m.value} label={m.label} sublabel={m.description} darkTheme={true} />
+                    <div key={idx} className="p-4 rounded-2xl bg-[rgba(11,20,38,0.75)] border border-[rgba(148,163,184,0.18)] space-y-1">
+                      <div className="text-xl font-display font-black gradient-text">{m.value}</div>
+                      <div className="text-xs font-bold text-white">{m.label}</div>
+                      <div className="text-xs text-[#93C5FD] font-mono font-medium">{m.description}</div>
+                    </div>
                   ))}
                 </div>
               </motion.div>
@@ -141,25 +148,24 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, onClose
             {/* TAB 02: DATA */}
             {activeTab === '02' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-                <h4 className="text-xs font-mono uppercase tracking-wider text-[#0071E3] mb-2 flex items-center gap-2 font-medium">
-                  <Database className="w-4 h-4" /> 02 — Dataset & Scale Specifications
+                <h4 className="text-xs font-mono uppercase tracking-wider text-[#93C5FD] mb-2 flex items-center gap-2 font-bold">
+                  <Database className="w-4 h-4 text-[#38BDF8]" /> 02 — Dataset & Scale Specifications
                 </h4>
-                <div className="p-6 rounded-2xl bg-[#141419] border border-white/10 space-y-4 font-sans">
-                  <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                    <span className="text-sm text-[#A1A1A6]">Dataset Volume:</span>
-                    <span className="text-lg font-bold font-mono text-white">{project.datasetScale}</span>
-                  </div>
-                  <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                    <span className="text-sm text-[#A1A1A6]">Primary Headline Metric:</span>
-                    <span className="text-lg font-bold font-mono text-emerald-400">{project.primaryMetricValue} ({project.primaryMetricLabel})</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-[#A1A1A6]">Technology Stack:</span>
-                    <div className="flex flex-wrap gap-1.5 justify-end">
+                <div className="p-6 rounded-2xl bg-[rgba(11,20,38,0.75)] border border-[rgba(148,163,184,0.18)] space-y-4">
+                  {[
+                    { label: 'Dataset Volume', value: project.datasetScale },
+                    { label: 'Primary Metric', value: `${project.primaryMetricValue} (${project.primaryMetricLabel})` },
+                  ].map(({ label, value }) => (
+                    <div key={label} className="flex items-center justify-between border-b border-[rgba(148,163,184,0.15)] pb-4 last:border-0 last:pb-0">
+                      <span className="text-sm sm:text-base text-[#CBD5E1] font-medium">{label}:</span>
+                      <span className="text-sm sm:text-base font-bold font-mono gradient-text">{value}</span>
+                    </div>
+                  ))}
+                  <div>
+                    <span className="text-sm sm:text-base text-[#CBD5E1] font-medium block mb-2">Technology Stack:</span>
+                    <div className="flex flex-wrap gap-1.5">
                       {project.techStack.map((tech, i) => (
-                        <span key={i} className="px-2.5 py-0.5 rounded-full bg-white/10 text-xs font-mono text-white">
-                          {tech}
-                        </span>
+                        <span key={i} className="tech-pill">{tech}</span>
                       ))}
                     </div>
                   </div>
@@ -170,18 +176,16 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, onClose
             {/* TAB 03: ANALYSIS */}
             {activeTab === '03' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-                <h4 className="text-xs font-mono uppercase tracking-wider text-[#0071E3] mb-2 flex items-center gap-2 font-medium">
-                  <BarChart2 className="w-4 h-4" /> 03 — Analytical Methodology
+                <h4 className="text-xs font-mono uppercase tracking-wider text-[#93C5FD] mb-2 flex items-center gap-2 font-bold">
+                  <BarChart2 className="w-4 h-4 text-[#38BDF8]" /> 03 — Analytical Methodology
                 </h4>
-                <div className="space-y-3 font-sans">
+                <div className="space-y-3">
                   {project.analyticalApproach.map((step, idx) => (
-                    <div key={idx} className="flex gap-4 p-4 rounded-2xl bg-[#141419] border border-white/10 items-start">
-                      <span className="w-7 h-7 rounded-full bg-[#0071E3] text-white font-mono text-xs font-bold flex items-center justify-center shrink-0">
-                        0{idx + 1}
+                    <div key={idx} className="flex gap-4 p-4 rounded-2xl bg-[rgba(11,20,38,0.75)] border border-[rgba(148,163,184,0.18)] items-start">
+                      <span className="w-7 h-7 rounded-full bg-gradient-to-br from-[#2563EB] to-[#06B6D4] text-white font-mono text-xs font-bold flex items-center justify-center shrink-0">
+                        {String(idx + 1).padStart(2, '0')}
                       </span>
-                      <p className="text-sm text-slate-200 leading-relaxed pt-0.5">
-                        {step}
-                      </p>
+                      <p className="text-sm sm:text-base text-[#CBD5E1] leading-relaxed pt-0.5 font-normal">{step}</p>
                     </div>
                   ))}
                 </div>
@@ -192,65 +196,59 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, onClose
             {activeTab === '04' && project.projectImages && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-xs font-mono uppercase tracking-wider text-[#0071E3] flex items-center gap-2 font-medium">
-                    <ImageIcon className="w-4 h-4 text-[#0071E3]" /> 04 — Key Analytical Finding Charts ({project.projectImages.length} Visuals)
+                  <h4 className="text-xs font-mono uppercase tracking-wider text-[#93C5FD] flex items-center gap-2 font-bold">
+                    <ImageIcon className="w-4 h-4 text-[#38BDF8]" /> 04 — Key Analytical Finding Charts ({project.projectImages.length} Visuals)
                   </h4>
-                  <span className="text-xs font-mono text-[#A1A1A6]">Click any chart to enlarge</span>
+                  <span className="text-xs font-mono text-[#93C5FD] font-semibold">Click any chart to enlarge</span>
                 </div>
 
-                {/* Main Selected Image Showcase */}
                 {project.projectImages[activeImgIndex] && (
-                  <div className="p-6 rounded-2xl bg-[#141419] border border-white/10 space-y-4">
-                    <div className="flex items-center justify-between pb-3 border-b border-white/10">
-                      <h5 className="text-base font-semibold font-display text-white">
+                  <div className="p-5 rounded-2xl bg-[rgba(11,20,38,0.75)] border border-[rgba(148,163,184,0.18)] space-y-4">
+                    <div className="flex items-center justify-between pb-3 border-b border-[rgba(148,163,184,0.15)]">
+                      <h5 className="text-base font-display font-bold text-white">
                         {project.projectImages[activeImgIndex].title}
                       </h5>
                       <button
                         onClick={() => setPreviewImg(project.projectImages![activeImgIndex])}
-                        className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 hover:bg-[#0071E3] text-xs font-mono text-white transition-colors cursor-pointer"
+                        className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[rgba(59,130,246,0.15)] hover:bg-[rgba(59,130,246,0.25)] text-[#93C5FD] hover:text-white text-xs font-mono font-bold border border-[rgba(96,165,250,0.3)] transition-colors cursor-pointer"
                       >
                         <Maximize2 className="w-3.5 h-3.5" />
                         <span>Enlarge</span>
                       </button>
                     </div>
-
                     <div
                       onClick={() => setPreviewImg(project.projectImages![activeImgIndex])}
-                      className="bg-white rounded-xl overflow-hidden p-3 cursor-pointer group hover:opacity-95 transition-opacity border border-white/10 flex items-center justify-center"
+                      className="bg-[rgba(0,0,0,0.35)] rounded-xl overflow-hidden p-3 cursor-pointer hover:opacity-90 transition-opacity border border-[rgba(148,163,184,0.18)] flex items-center justify-center"
                     >
                       <img
                         src={project.projectImages[activeImgIndex].src}
                         alt={project.projectImages[activeImgIndex].title}
-                        className="max-h-[380px] w-auto object-contain rounded-lg shadow-md"
+                        className="max-h-[350px] w-auto object-contain rounded-lg"
                       />
                     </div>
-
-                    <p className="text-sm font-sans text-slate-300 leading-relaxed bg-white/5 p-4 rounded-xl border border-white/5">
+                    <p className="text-sm sm:text-base text-[#CBD5E1] leading-relaxed bg-[rgba(5,10,20,0.4)] p-4 rounded-xl border border-[rgba(148,163,184,0.15)] font-normal">
                       {project.projectImages[activeImgIndex].caption}
                     </p>
                   </div>
                 )}
 
-                {/* Thumbnails Selector Row */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
                   {project.projectImages.map((img, idx) => {
                     const isSelected = activeImgIndex === idx;
                     return (
                       <div
                         key={idx}
                         onClick={() => setActiveImgIndex(idx)}
-                        className={`p-2 rounded-xl bg-[#141419] border transition-all cursor-pointer space-y-2 ${
+                        className={`p-2 rounded-xl border transition-all cursor-pointer space-y-1.5 ${
                           isSelected
-                            ? 'border-[#0071E3] ring-2 ring-[#0071E3]/40 bg-white/10'
-                            : 'border-white/10 hover:border-white/30 hover:bg-white/5'
+                            ? 'border-[rgba(96,165,250,0.6)] bg-[rgba(59,130,246,0.15)]'
+                            : 'border-[rgba(148,163,184,0.16)] bg-[rgba(11,20,38,0.75)] hover:border-[rgba(96,165,250,0.4)]'
                         }`}
                       >
-                        <div className="bg-white rounded-lg overflow-hidden h-16 p-1 flex items-center justify-center">
+                        <div className="bg-[rgba(0,0,0,0.3)] rounded-lg overflow-hidden h-14 flex items-center justify-center">
                           <img src={img.src} alt={img.title} className="h-full w-auto object-contain" />
                         </div>
-                        <div className="text-[11px] font-sans font-medium text-slate-300 truncate text-center">
-                          {img.title}
-                        </div>
+                        <div className="text-xs font-mono text-[#CBD5E1] truncate text-center font-medium">{img.title}</div>
                       </div>
                     );
                   })}
@@ -261,14 +259,14 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, onClose
             {/* TAB 05: SQL */}
             {activeTab === '05' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-                <h4 className="text-xs font-mono uppercase tracking-wider text-[#0071E3] mb-2 flex items-center gap-2 font-medium">
-                  <Code className="w-4 h-4" /> 05 — SQL Query & Schema Highlights
+                <h4 className="text-xs font-mono uppercase tracking-wider text-[#93C5FD] mb-2 flex items-center gap-2 font-bold">
+                  <Code className="w-4 h-4 text-[#38BDF8]" /> 05 — SQL Query & Schema Highlights
                 </h4>
-                <ul className="space-y-2 mb-4 text-sm font-sans text-slate-300">
+                <ul className="space-y-2.5 mb-4">
                   {project.sqlWork.map((item, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <ChevronRight className="w-4 h-4 text-[#0071E3] shrink-0 mt-0.5" />
-                      <span>{item}</span>
+                    <li key={i} className="flex items-start gap-2 text-sm sm:text-base text-[#CBD5E1] font-normal">
+                      <ChevronRight className="w-4 h-4 text-[#38BDF8] shrink-0 mt-0.5" />
+                      <span className="leading-relaxed">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -279,14 +277,14 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, onClose
             {/* TAB 06: PYTHON */}
             {activeTab === '06' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-                <h4 className="text-xs font-mono uppercase tracking-wider text-emerald-400 mb-2 flex items-center gap-2 font-medium">
-                  <Code className="w-4 h-4" /> 06 — Python Data Cleaning & ML Scripting
+                <h4 className="text-xs font-mono uppercase tracking-wider text-[#93C5FD] mb-2 flex items-center gap-2 font-bold">
+                  <Code className="w-4 h-4 text-[#38BDF8]" /> 06 — Python Data Cleaning & ML Scripting
                 </h4>
-                <ul className="space-y-2 mb-4 text-sm font-sans text-slate-300">
+                <ul className="space-y-2.5 mb-4">
                   {project.pythonWork.map((item, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <ChevronRight className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                      <span>{item}</span>
+                    <li key={i} className="flex items-start gap-2 text-sm sm:text-base text-[#CBD5E1] font-normal">
+                      <ChevronRight className="w-4 h-4 text-[#38BDF8] shrink-0 mt-0.5" />
+                      <span className="leading-relaxed">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -297,13 +295,13 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, onClose
             {/* TAB 07: POWER BI */}
             {activeTab === '07' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-                <h4 className="text-xs font-mono uppercase tracking-wider text-amber-400 mb-2 flex items-center gap-2 font-medium">
-                  <BarChart2 className="w-4 h-4" /> 07 — Power BI Executive Suite ({project.dashboardPagesCount} Pages)
+                <h4 className="text-xs font-mono uppercase tracking-wider text-[#93C5FD] mb-2 flex items-center gap-2 font-bold">
+                  <BarChart2 className="w-4 h-4 text-[#38BDF8]" /> 07 — Power BI Executive Suite ({project.dashboardPagesCount} Pages)
                 </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 font-sans">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
                   {project.dashboardPages.map((page, i) => (
-                    <div key={i} className="p-3.5 rounded-xl bg-[#141419] border border-white/10 text-xs text-amber-300 flex items-center gap-2 font-mono">
-                      <span className="w-2 h-2 rounded-full bg-amber-400" />
+                    <div key={i} className="p-3.5 rounded-xl bg-[rgba(11,20,38,0.75)] border border-[rgba(148,163,184,0.18)] text-xs sm:text-sm text-[#CBD5E1] font-mono flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-[#38BDF8] shrink-0" />
                       <span>{page}</span>
                     </div>
                   ))}
@@ -315,11 +313,11 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, onClose
             {/* TAB 08: INSIGHTS */}
             {activeTab === '08' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-                <h4 className="text-xs font-mono uppercase tracking-wider text-[#0071E3] mb-2 flex items-center gap-2 font-medium">
-                  <CheckCircle className="w-4 h-4" /> 08 — Quantified Business Impact
+                <h4 className="text-xs font-mono uppercase tracking-wider text-[#93C5FD] mb-2 flex items-center gap-2 font-bold">
+                  <CheckCircle className="w-4 h-4 text-[#10B981]" /> 08 — Quantified Business Impact
                 </h4>
-                <div className="p-6 rounded-2xl bg-[#141419] border border-emerald-500/30 font-sans">
-                  <p className="text-base md:text-lg text-slate-200 leading-relaxed">
+                <div className="p-6 rounded-2xl bg-[rgba(16,185,129,0.08)] border border-[rgba(16,185,129,0.3)]">
+                  <p className="text-base sm:text-lg text-white leading-relaxed font-medium">
                     {project.businessImpact}
                   </p>
                 </div>
@@ -329,16 +327,14 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, onClose
             {/* TAB 09: RECOMMENDATIONS */}
             {activeTab === '09' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-                <h4 className="text-xs font-mono uppercase tracking-wider text-[#0071E3] mb-2 flex items-center gap-2 font-medium">
-                  <FileText className="w-4 h-4" /> 09 — Strategic Recommendations
+                <h4 className="text-xs font-mono uppercase tracking-wider text-[#93C5FD] mb-2 flex items-center gap-2 font-bold">
+                  <FileText className="w-4 h-4 text-[#38BDF8]" /> 09 — Strategic Recommendations
                 </h4>
-                <div className="space-y-3 font-sans">
+                <div className="space-y-3">
                   {project.recommendations.map((rec, idx) => (
-                    <div key={idx} className="p-4 rounded-2xl bg-[#141419] border border-white/10 flex items-start gap-3">
-                      <CheckCircle className="w-5 h-5 text-[#0071E3] shrink-0 mt-0.5" />
-                      <p className="text-sm text-slate-200 leading-relaxed">
-                        {rec}
-                      </p>
+                    <div key={idx} className="p-4 rounded-2xl bg-[rgba(11,20,38,0.75)] border border-[rgba(148,163,184,0.18)] flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-[#10B981] shrink-0 mt-0.5" />
+                      <p className="text-sm sm:text-base text-[#CBD5E1] leading-relaxed font-normal">{rec}</p>
                     </div>
                   ))}
                 </div>
@@ -347,11 +343,11 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, onClose
           </div>
 
           {/* Footer Bar */}
-          <div className="px-6 py-3 bg-[#121217] border-t border-white/10 flex items-center justify-between text-xs font-sans text-[#A1A1A6]">
+          <div className="px-6 py-3 border-t border-[rgba(148,163,184,0.15)] flex items-center justify-between text-xs font-mono text-[#CBD5E1] bg-[rgba(5,10,20,0.5)] font-medium">
             <span>Explore analytical workflow & charts</span>
             <button
               onClick={onClose}
-              className="apple-btn-blue px-4 py-1.5 text-xs font-medium cursor-pointer"
+              className="btn-primary px-4 py-1.5 text-xs font-semibold cursor-pointer"
             >
               Close case study
             </button>
@@ -362,27 +358,26 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, onClose
         {previewImg && (
           <div
             onClick={() => setPreviewImg(null)}
-            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 cursor-pointer"
+            className="fixed inset-0 z-[60] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 sm:p-8 cursor-pointer"
           >
             <div
               onClick={(e) => e.stopPropagation()}
-              className="max-w-4xl max-h-[90vh] bg-[#121217] border border-white/20 rounded-3xl p-6 relative overflow-hidden flex flex-col space-y-4"
+              className="max-w-4xl max-h-[90vh] rounded-3xl p-6 relative overflow-hidden flex flex-col space-y-4 shadow-2xl"
+              style={{ background: 'rgba(8, 15, 30, 0.97)', border: '1px solid rgba(99,146,255,0.15)' }}
             >
-              <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                <h4 className="text-lg font-semibold font-display text-white">{previewImg.title}</h4>
+              <div className="flex items-center justify-between border-b border-[rgba(148,163,184,0.15)] pb-3">
+                <h4 className="text-base sm:text-lg font-display font-bold text-white">{previewImg.title}</h4>
                 <button
                   onClick={() => setPreviewImg(null)}
-                  className="p-1.5 rounded-full bg-white/10 text-white hover:bg-white/20"
+                  className="p-1.5 rounded-full bg-[rgba(255,255,255,0.06)] text-white hover:bg-[rgba(255,255,255,0.15)] border border-[rgba(148,163,184,0.2)] cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
-
-              <div className="bg-white rounded-2xl p-4 flex items-center justify-center overflow-auto max-h-[65vh]">
+              <div className="bg-[rgba(0,0,0,0.35)] rounded-2xl p-4 flex items-center justify-center overflow-auto max-h-[65vh] border border-[rgba(148,163,184,0.18)]">
                 <img src={previewImg.src} alt={previewImg.title} className="max-h-[60vh] w-auto object-contain rounded-lg" />
               </div>
-
-              <p className="text-sm font-sans text-slate-300 bg-white/5 p-4 rounded-xl border border-white/5 leading-relaxed">
+              <p className="text-sm sm:text-base text-[#CBD5E1] bg-[rgba(5,10,20,0.4)] p-4 rounded-xl border border-[rgba(148,163,184,0.15)] leading-relaxed font-normal">
                 {previewImg.caption}
               </p>
             </div>
