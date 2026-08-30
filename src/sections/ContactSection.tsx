@@ -8,7 +8,7 @@ import { LinkedinIcon, GithubIcon } from '../components/common/SocialIcons';
 export const ContactSection: React.FC = () => {
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState('');
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
@@ -18,40 +18,56 @@ export const ContactSection: React.FC = () => {
     setTimeout(() => setCopiedEmail(false), 2000);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!formData.email || !formData.message || submitting) return;
 
-    setSubmitting(true);
+    if (!formData.email || !formData.message || isSubmitting) return;
+
+    setIsSubmitting(true);
     setFormError('');
 
     try {
-      const response = await fetch('/api/contact', {
+      const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(PERSONAL_INFO.email)}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name || 'Website visitor',
+          email: formData.email,
+          message: formData.message,
+          _subject: `Portfolio message from ${formData.name || 'Website visitor'}`,
+          _template: 'table',
+          _replyto: formData.email,
+        }),
       });
 
-      const data = await response.json().catch(() => ({}));
+      let result: { success?: boolean; message?: string } = {};
+      try {
+        result = await response.json();
+      } catch {
+        // Keep the HTTP status as the source of truth if the service returns non-JSON.
+      }
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Unable to send your message. Please try again.');
+      if (!response.ok || result.success === false) {
+        throw new Error(result.message || 'The email service could not process your message.');
       }
 
       setFormSubmitted(true);
       setFormData({ name: '', email: '', message: '' });
-      setTimeout(() => setFormSubmitted(false), 5000);
     } catch (error) {
       console.error('Contact form submission failed:', error);
-      setFormError(error instanceof Error ? error.message : 'Unable to send your message. Please try again.');
+      setFormError('We could not send your message right now. Please try again or email directly.');
     } finally {
-      setSubmitting(false);
+      setIsSubmitting(false);
     }
   };
 
   return (
     <section id="contact" className="py-32 section-alt text-[#F0F4FF] section-separator relative overflow-hidden scroll-mt-24">
       <div className="absolute inset-0 grid-pattern opacity-20 pointer-events-none" />
+
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.08)_0%,transparent_70%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -126,7 +142,6 @@ export const ContactSection: React.FC = () => {
                 onClick={handleCopyEmail}
                 className="p-2.5 rounded-xl bg-[rgba(255,255,255,0.06)] hover:bg-[rgba(59,130,246,0.15)] border border-[rgba(148,163,184,0.2)] hover:border-[rgba(96,165,250,0.5)] text-[#CBD5E1] hover:text-white transition-all cursor-pointer shrink-0"
                 title="Copy email address"
-                type="button"
               >
                 {copiedEmail ? <CheckCircle2 className="w-4 h-4 text-[#10B981]" /> : <Copy className="w-4 h-4" />}
               </button>
@@ -200,6 +215,13 @@ export const ContactSection: React.FC = () => {
                   <p className="text-sm sm:text-base text-[#CBD5E1]">
                     Thank you. Prajith will review your inquiry and get back within 24 hours.
                   </p>
+                  <button
+                    type="button"
+                    onClick={() => setFormSubmitted(false)}
+                    className="mt-3 text-sm font-semibold text-[#93C5FD] hover:text-white underline underline-offset-4"
+                  >
+                    Send another message
+                  </button>
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -216,7 +238,10 @@ export const ContactSection: React.FC = () => {
                         required
                         placeholder={placeholder}
                         value={formData[key]}
-                        onChange={(e) => setFormData({ ...formData, [key]: e.target.value })}
+                        onChange={(e) => {
+                          setFormData({ ...formData, [key]: e.target.value });
+                          if (formError) setFormError('');
+                        }}
                         className="w-full px-4 py-3 text-sm font-medium input-dark"
                       />
                     </div>
@@ -231,24 +256,27 @@ export const ContactSection: React.FC = () => {
                       rows={4}
                       placeholder="Discussing Data Analyst role or project requirement..."
                       value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, message: e.target.value });
+                        if (formError) setFormError('');
+                      }}
                       className="w-full px-4 py-3 text-sm font-medium input-dark resize-none"
                     />
                   </div>
 
                   {formError && (
-                    <div className="rounded-xl border border-red-400/30 bg-red-400/10 px-4 py-3 text-sm text-red-200" role="alert">
+                    <div className="rounded-xl border border-[rgba(248,113,113,0.35)] bg-[rgba(127,29,29,0.16)] px-4 py-3 text-sm text-[#FCA5A5]">
                       {formError}
                     </div>
                   )}
 
                   <button
                     type="submit"
-                    disabled={submitting}
-                    className="w-full btn-primary py-3.5 text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
+                    disabled={isSubmitting}
+                    className="w-full btn-primary py-3.5 text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-70"
                   >
-                    <Send className={`w-4 h-4 ${submitting ? 'animate-pulse' : ''}`} />
-                    <span>{submitting ? 'Sending...' : 'Send Message'}</span>
+                    <Send className="w-4 h-4" />
+                    <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
                   </button>
                 </form>
               )}
