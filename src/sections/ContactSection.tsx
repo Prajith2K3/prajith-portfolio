@@ -8,6 +8,8 @@ import { LinkedinIcon, GithubIcon } from '../components/common/SocialIcons';
 export const ContactSection: React.FC = () => {
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState('');
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
   const handleCopyEmail = () => {
@@ -16,21 +18,40 @@ export const ContactSection: React.FC = () => {
     setTimeout(() => setCopiedEmail(false), 2000);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.email || !formData.message) return;
-    setFormSubmitted(true);
-    setTimeout(() => {
-      setFormSubmitted(false);
+    if (!formData.email || !formData.message || submitting) return;
+
+    setSubmitting(true);
+    setFormError('');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Unable to send your message. Please try again.');
+      }
+
+      setFormSubmitted(true);
       setFormData({ name: '', email: '', message: '' });
-    }, 4000);
+      setTimeout(() => setFormSubmitted(false), 5000);
+    } catch (error) {
+      console.error('Contact form submission failed:', error);
+      setFormError(error instanceof Error ? error.message : 'Unable to send your message. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <section id="contact" className="py-32 section-alt text-[#F0F4FF] section-separator relative overflow-hidden scroll-mt-24">
       <div className="absolute inset-0 grid-pattern opacity-20 pointer-events-none" />
-
-      {/* Background glow */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.08)_0%,transparent_70%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -41,7 +62,6 @@ export const ContactSection: React.FC = () => {
           subtitle="Open to Data Analyst opportunities, analytics consulting, and data-driven roles."
         />
 
-        {/* Centered availability card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -70,7 +90,6 @@ export const ContactSection: React.FC = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-          {/* Left Column — Contact info */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -87,7 +106,6 @@ export const ContactSection: React.FC = () => {
               </p>
             </div>
 
-            {/* Email card */}
             <div className="glass-card p-5 flex items-center justify-between gap-4">
               <div className="flex items-center gap-3 min-w-0">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-[rgba(59,130,246,0.15)] border border-[rgba(96,165,250,0.3)] shrink-0">
@@ -108,12 +126,12 @@ export const ContactSection: React.FC = () => {
                 onClick={handleCopyEmail}
                 className="p-2.5 rounded-xl bg-[rgba(255,255,255,0.06)] hover:bg-[rgba(59,130,246,0.15)] border border-[rgba(148,163,184,0.2)] hover:border-[rgba(96,165,250,0.5)] text-[#CBD5E1] hover:text-white transition-all cursor-pointer shrink-0"
                 title="Copy email address"
+                type="button"
               >
                 {copiedEmail ? <CheckCircle2 className="w-4 h-4 text-[#10B981]" /> : <Copy className="w-4 h-4" />}
               </button>
             </div>
 
-            {/* Social links */}
             <div className="grid grid-cols-2 gap-4">
               <a
                 href={PERSONAL_INFO.linkedin}
@@ -141,7 +159,6 @@ export const ContactSection: React.FC = () => {
               </a>
             </div>
 
-            {/* Quick facts */}
             <div className="glass-card p-5 space-y-3">
               <div className="text-xs font-mono text-[#93C5FD] uppercase tracking-wider font-bold mb-2">Quick Facts</div>
               {[
@@ -158,7 +175,6 @@ export const ContactSection: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Right Column — Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -220,12 +236,19 @@ export const ContactSection: React.FC = () => {
                     />
                   </div>
 
+                  {formError && (
+                    <div className="rounded-xl border border-red-400/30 bg-red-400/10 px-4 py-3 text-sm text-red-200" role="alert">
+                      {formError}
+                    </div>
+                  )}
+
                   <button
                     type="submit"
-                    className="w-full btn-primary py-3.5 text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer"
+                    disabled={submitting}
+                    className="w-full btn-primary py-3.5 text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    <Send className="w-4 h-4" />
-                    <span>Send Message</span>
+                    <Send className={`w-4 h-4 ${submitting ? 'animate-pulse' : ''}`} />
+                    <span>{submitting ? 'Sending...' : 'Send Message'}</span>
                   </button>
                 </form>
               )}
